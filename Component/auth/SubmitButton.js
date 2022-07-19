@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-const SubmitButton = () => {
+const SubmitButton = ({ handleSubmit, loading }) => {
   return (
     <TouchableOpacity
-      onPress={() => {}}
+      onPress={() => {handleSubmit()}}
       style={{
         backgroundColor: "#ff9900",
         height: 50,
@@ -24,7 +24,7 @@ const SubmitButton = () => {
           marginBottom: 30,
         }}
       >
-        Sign Up
+        {loading ? "Please wait..." : "Sign Up"}
       </Text>
     </TouchableOpacity>
   );

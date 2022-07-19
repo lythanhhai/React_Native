@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Text,
   View,
@@ -9,6 +10,7 @@ import {
 } from "react-native";
 import UserInput from "../Component/auth/UserInput";
 import SubmitButton from "../Component/auth/SubmitButton";
+import CircleLogo from '../Component/auth/CircleLogo'
 
 const styles = StyleSheet.create({
   container: {
@@ -36,9 +38,35 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!name || !email || !password) {
+      alert("All fields are required");
+      setLoading(false);
+      return;
+    } else {
+      setLoading(true);
+    }
+    try {
+      // TODO
+      const { data } = await axios.post("http://localhost:8000/api/signup", {
+        name: name,
+        email: email,
+        password: password,
+      });
+      console.log("Sign in success => ", data);
+      alert("Sign up success");
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false)
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <CircleLogo />
       <Text style={styles.text}>Sign up</Text>
       <View style={styles.container__form}>
         {/* <Text>Name</Text>
@@ -65,7 +93,7 @@ const Signup = () => {
           autoCompleteType="password"
         />
         {/* <Button title="Submit" onPress={() => {}}>Sign Up</Button> */}
-        <SubmitButton />
+        <SubmitButton handleSubmit={handleSubmit} loading={loading} />
         <Text>{JSON.stringify({ name, email, password })}</Text>
       </View>
     </View>
