@@ -9,12 +9,14 @@ import {
 } from "react-native";
 import UserInput from "../Component/auth/UserInput";
 import SubmitButton from "../Component/auth/SubmitButton";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
+    // alignItems: "center",
   },
   text: {
     fontSize: 24,
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   container__form: {
-    marginHorizontal: 24,
+    marginHorizontal: 25,
   },
   continer__form__input: {
     borderBottomWidth: 0.5,
@@ -37,6 +39,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState("");
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Sign up</Text>
@@ -66,6 +69,8 @@ const Signup = () => {
         />
         {/* <Button title="Submit" onPress={() => {}}>Sign Up</Button> */}
         <SubmitButton />
+        <Text style={{ marginHorizontal: "47%"}}>Or</Text>
+        <Button title="Go to home" onPress={() => navigation.navigate("Home")}></Button>
         <Text>{JSON.stringify({ name, email, password })}</Text>
       </View>
     </View>
