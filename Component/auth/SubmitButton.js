@@ -16,7 +16,7 @@ const SubmitButton = () => {
     >
       <TouchableOpacity
         onPress={() => {
-          console.log("a");
+          // console.log("a");
         }}
         style={{
           backgroundColor: "transparent",
