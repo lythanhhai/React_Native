@@ -10,11 +10,12 @@ import {
 } from "react-native";
 import UserInput from "../Component/auth/UserInput";
 import SubmitButton from "../Component/auth/SubmitButton";
-<<<<<<< HEAD
-import CircleLogo from '../Component/auth/CircleLogo'
-=======
+import CircleLogo from "../Component/auth/CircleLogo";
 import { useNavigation } from "@react-navigation/native";
->>>>>>> 1832df8c3538b62718e1ff0126f122aee38f452f
+import PushNotification from "react-native-push-notification";
+
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("test.db");
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
     // alignItems: "center",
+    // justifyItems: "center",
   },
   text: {
     fontSize: 24,
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
   },
   container__form: {
     marginHorizontal: 25,
+    // backgroundColor: "red"
   },
   continer__form__input: {
     borderBottomWidth: 0.5,
@@ -43,8 +46,29 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    getPosts()
+    createChannels();
+  }, []);
+
+  function getPosts() {
+    const promise = new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "SELECT * FROM ccc",
+          [],
+          (_, result) => resolve(result.rows.length),
+          (_, error) => reject(error)
+        );
+      });
+    });
+    promise
+      .then((user) => console.log(user))
+      .catch((err) => console.log(err));
+  }
 
   const handleSubmit = async () => {
     if (!name || !email || !password) {
@@ -66,17 +90,21 @@ const Signup = () => {
       setLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false)
+      setLoading(false);
+      // navigation.navigate("Home")
     }
   };
 
-=======
-  const [loading, setLoading] = useState("");
-  const navigation = useNavigation();
->>>>>>> 1832df8c3538b62718e1ff0126f122aee38f452f
+  const createChannels = () => {
+    PushNotification.createChannel({
+      channelId: "test-channel",
+      channelName: "Test Channel",
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <CircleLogo />
+      {/* <CircleLogo /> */}
       <Text style={styles.text}>Sign up</Text>
       <View style={styles.container__form}>
         {/* <Text>Name</Text>
@@ -103,15 +131,12 @@ const Signup = () => {
           autoCompleteType="password"
         />
         {/* <Button title="Submit" onPress={() => {}}>Sign Up</Button> */}
-<<<<<<< HEAD
-        <SubmitButton handleSubmit={handleSubmit} loading={loading} />
-=======
-        <SubmitButton />
-        <Text style={{ marginHorizontal: "47%"}}>Or</Text>
+
+        {/* <Text style={{ marginHorizontal: "47%"}}>Or</Text>
         <Button title="Go to home" onPress={() => navigation.navigate("Home")}></Button>
->>>>>>> 1832df8c3538b62718e1ff0126f122aee38f452f
-        <Text>{JSON.stringify({ name, email, password })}</Text>
+        <Text>{JSON.stringify({ name, email, password })}</Text> */}
       </View>
+      <SubmitButton handleSubmit={handleSubmit} loading={loading} email={email} password={password} name={name} />
     </View>
   );
 };

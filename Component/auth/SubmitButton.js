@@ -1,42 +1,71 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import PushNotification from "react-native-push-notification";
 
-const SubmitButton = ({ handleSubmit, loading }) => {
+
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("test.db");
+
+
+
+const styles = StyleSheet.create({
+  button: {
+    transform: [{ translateX: 74 }],
+    backgroundColor: "#ff9900",
+    height: 50,
+    width: 250,
+    borderRadius: 24,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "300",
+    textAlign: "center",
+    marginTop: 10,
+  },
+});
+
+const SubmitButton = ({ handleSubmit, loading, email, password, name }) => {
+  const handleNotification = () => {
+    PushNotification.localNotification({
+      channelId: "test-channel",
+      title: "You clicked on " + "Notification",
+      message: "OK",
+    });
+  };
+
+  const addExpense = (email, password, name) => {
+    const promise = new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO Users (Email, Password, Name) VALUES (?, ?, ?);`,
+          [email, password, name],
+          (_, result) => {
+            resolve(result);
+          },
+          (_, err) => {
+            reject(err);
+          }
+        );
+      });
+    });
+    return promise;
+  };
+
   return (
-    <View
-      style={{
-        backgroundColor: "#ff9900",
-        height: 50,
-        width: 250,
-        borderRadius: 24,
-        // flex: 1,
-        // justifyContent: "center",
-        marginLeft: 30,
-      }}
-    >
+    <>
       <TouchableOpacity
         onPress={() => {
-          // console.log("a");
+          // handleSubmit();
+          // handleNotification();
+          // addExpense(email, password, name)
+          //   .then((res) => console.log(res))
+          //   .catch((err) => console.log(err));
         }}
-        style={{
-          backgroundColor: "transparent",
-          height: "100%",
-          width: "100%",
-          borderRadius: 24,
-        }}
+        style={styles.button}
       >
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "300",
-            textAlign: "center",
-            marginTop: 10
-          }}
-        >
-          Sign Up
-        </Text>
+        <Text style={styles.text}>Sign Up</Text>
       </TouchableOpacity>
-    </View>
+    </>
   );
 };
 

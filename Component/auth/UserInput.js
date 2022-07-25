@@ -2,20 +2,6 @@ import React from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
-  text: {
-    fontSize: 24,
-    color: "#333",
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  container__form: {
-    marginHorizontal: 24,
-  },
   continer__form__input: {
     borderBottomWidth: 0.5,
     height: 36,
@@ -37,7 +23,7 @@ const UserInput = ({
     setValue(text);
   };
   return (
-    <View style={styles.container__form}>
+    <>
       <Text>{name}</Text>
       <TextInput
         autoCorrect={false}
@@ -50,7 +36,7 @@ const UserInput = ({
           hanldeChange(text);
         }}
       />
-    </View>
+    </>
   );
 };
 
