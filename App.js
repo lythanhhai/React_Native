@@ -6,24 +6,25 @@ import Signup from "./screens/Signup";
 
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import { useEffect } from "react";
+
+// import SQLite from "react-native-sqlite-storage";
 
 // const db = SQLite.openDatabase(
 //     "./MainDB.db"
 // );
-// import SQLite, { openDatabase } from "react-native-sqlite-storage";
-import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase(
-  {
-    name: "MainDB1.db",
-    location: "default",
-  },
-  () => console.log("success"),
-  () => console.log("faild"),
-);
-
+import * as SQLite from "expo-sqlite";
+const db = SQLite.openDatabase("test.db");
+// const db = SQLite.openDatabase(
+//   {
+//     name: "test.db",
+//     createFromLocation: "~MainDB.db",
+//     location: "default",
+//   },
+//   () => console.log("success"),
+//   () => console.log("faild"),
+// );
 
 const Stack = createStackNavigator();
 
@@ -44,18 +45,25 @@ export default function App() {
   });
 
   useEffect(() => {
-    createTable();
+    createTable()
+      .then()
+      .catch((err) => console.log(err));
   }, []);
 
   const createTable = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "Create table if not exists "
-        +"Users "
-        +"(ID INTERGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Email TEXT, Password TEXT"
-      )
-    })
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "CREATE TABLE IF NOT EXISTS ccc (id INTEGER PRIMARY KEY NOT NULL, text TEXT NOT NULL, img TEXT, date TEXT, booked INT)",
+          [],
+          resolve,
+          (_, error) => reject(error)
+        );
+      });
+    });
   };
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -92,3 +100,5 @@ export default function App() {
 
 // https://bytemeta.vip/repo/andpor/react-native-sqlite-storage/issues/477
 // https://stackoverflow.com/questions/42718973/run-avd-emulator-without-android-studio
+// expo sqlite
+// https://www.tabnine.com/code/javascript/modules/expo-sqlite
