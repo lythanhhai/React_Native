@@ -8,6 +8,18 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useEffect } from "react";
 
+// import * as Notifications from 'expo-notifications';
+
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//       shouldShowAlert: true,
+//       shouldPlaySound: true,
+//       shouldSetBadge: trrue,
+//   }),
+// });
+
+// import * as firebae from 'firebase'
+
 // import SQLite from "react-native-sqlite-storage";
 
 // const db = SQLite.openDatabase(
@@ -15,7 +27,21 @@ import { useEffect } from "react";
 // );
 
 import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("test.db");
+// const db = SQLite.openDatabase("test.db");
+
+function errorCB(err) {
+  console.log("SQL Error: " + err);
+}
+
+function successCB() {
+  console.log("SQL executed fine");
+}
+
+function openCB() {
+  console.log("Database OPENED");
+}
+
+var db = SQLite.openDatabase("test.db", "1.0", "Test Database", 200000, openCB);
 // const db = SQLite.openDatabase(
 //   {
 //     name: "test.db",
@@ -54,7 +80,7 @@ export default function App() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS ccc (id INTEGER PRIMARY KEY NOT NULL, text TEXT NOT NULL, img TEXT, date TEXT, booked INT)",
+          "CREATE TABLE IF NOT EXISTS Users1 (ID INTEGER PRIMARY KEY NOT NULL, Email TEXT, Password TEXT, Name TEXT)",
           [],
           resolve,
           (_, error) => reject(error)

@@ -50,17 +50,17 @@ const Signup = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getPosts()
-    createChannels();
-  }, []);
+    getPosts();
+    // createChannels();
+  });
 
   function getPosts() {
     const promise = new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          "SELECT * FROM ccc",
+          "SELECT * FROM Users1",
           [],
-          (_, result) => resolve(result.rows.length),
+          (_, result) => resolve(result.rows._array),
           (_, error) => reject(error)
         );
       });

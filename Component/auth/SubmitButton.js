@@ -37,7 +37,7 @@ const SubmitButton = ({ handleSubmit, loading, email, password, name }) => {
     const promise = new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO Users (Email, Password, Name) VALUES (?, ?, ?);`,
+          `INSERT INTO Users1 (Email, Password, Name) VALUES (?, ?, ?);`,
           [email, password, name],
           (_, result) => {
             resolve(result);
@@ -57,9 +57,9 @@ const SubmitButton = ({ handleSubmit, loading, email, password, name }) => {
         onPress={() => {
           // handleSubmit();
           // handleNotification();
-          // addExpense(email, password, name)
-          //   .then((res) => console.log(res))
-          //   .catch((err) => console.log(err));
+          addExpense(email, password, name)
+            .then()
+            .catch((err) => console.log(err));
         }}
         style={styles.button}
       >
