@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     position: "absolute",
-    top: 90,
+    top: 60,
     height: "78%",
-    marginTop: 20,
+    // marginTop: 20,
     backgroundColor: "rgb(243,243,243)",
   },
   scroll: {
@@ -32,10 +32,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const DetailChat = () => {
+const DetailChat = (props) => {
+  const data = props.route.params;
+  // alert("PROPS " + data.user.name);
   return (
     <>
-      <Header title="Name" />
+      <Header title={data.user.name} pages={"Detail"} navigation={props.navigation}/>
       <View style={styles.container}>
         <ScrollView style={styles.scroll}>
           <OwnMessage content="Hello" />

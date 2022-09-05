@@ -10,7 +10,7 @@ const ListChat = (props) => {
       <FlatList
         data={data}
         renderItem={({ item }) => {
-          return <ChatItem item={item} />;
+          return <ChatItem item={item} navigation={props.navigation}/>;
         }}
       />
     </View>
