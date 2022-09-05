@@ -9,19 +9,19 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         position: "absolute",
-        top: 90,
+        top: 60,
         height: "100%",
         backgroundColor: "rgb(243,243,243)",
     },
 })
 
-const Home = () => {
+const Home = ({ navigation }) => {
     return(
         <>
-            <Header title="Notification" />
+            <Header title="Notification" pages={"Home"}/>
             <View style={styles.container}>
                 <Unread numberMessage={5}/>
-                <ListChat />
+                <ListChat navigation={ navigation }/>
             </View>
         </>
     );

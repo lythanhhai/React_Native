@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 
-const ChatItem = (props) => {
-  const { avatar, name, message, minute } = props.item;
+const ChatItem = ({ item, navigation }) => {
+  const { avatar, name, message, minute } = item;
   return (
-    <View style={styles.container} onPress={() => {
-      props.navigation.navigate("DetailChat")
+    <TouchableOpacity style={styles.container} onPress={() => {
+      navigation.navigate("Detail", { user: item });
+      // console.warn("oke")
     }}>
       <View style={styles.content}>
         <Image source={avatar} style={styles.image}/>
@@ -16,7 +17,7 @@ const ChatItem = (props) => {
         </View>
       </View>
       <Text style={styles.minute}>{minute}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
