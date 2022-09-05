@@ -2,25 +2,30 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import DetailChat from "./screens/DetailChat/DetailChat";
 import Home from "./screens/Home/Home";
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
             component={Home}
             options={{ title: "Welcome" }}
           />
+          <Stack.Screen
+            name="Detail"
+            component={DetailChat}
+            options={{ title: "Detail" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
-      <Home /> */}
-      <DetailChat />
+      {/* <Home />
+      <DetailChat /> */}
       <StatusBar style="auto" />
     </View>
   );

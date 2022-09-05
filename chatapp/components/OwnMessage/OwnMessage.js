@@ -1,16 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+import styles from "./Styles";
 
+const OwnMessage = (props) => {
+  const { content } = props;
+  return (
+    <>
+      <View style={styles.container}>
+        <View style={styles.frame}>
+          <Text>{content}</Text>
+        </View>
+        <Image
+          source={require("../../assets/images/image1.jpeg")}
+          style={styles.image}
+        />
+      </View>
+    </>
+  );
+};
 
-
-const OwnMessage = () => {
-    return(
-        <>
-            <View>
-                <Text></Text>
-            </View>
-        </>
-    );
-}
-
-export default React.memo(OwnMessage)
+export default React.memo(OwnMessage);

@@ -5,7 +5,9 @@ import styles from "./Styles";
 const ChatItem = (props) => {
   const { avatar, name, message, minute } = props.item;
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={() => {
+      props.navigation.navigate("DetailChat")
+    }}>
       <View style={styles.content}>
         <Image source={avatar} style={styles.image}/>
         <View style={styles.infor}>
