@@ -4,6 +4,7 @@ import DetailChat from "./screens/DetailChat/DetailChat";
 import Home from "./screens/Home/Home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Register from "./screens/Register";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name={"Register"} component={Register} />
         <Stack.Screen name={"Home"} component={Home} />
         <Stack.Screen name={"Detail"} component={DetailChat} />
       </Stack.Navigator>
