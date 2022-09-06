@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import styles from "./Styles";
 
 const OwnMessage = (props) => {
-  const { content } = props;
+  const { content, avatar } = props;
   return (
     <>
       <View style={styles.container}>
@@ -11,7 +11,7 @@ const OwnMessage = (props) => {
           <Text>{content}</Text>
         </View>
         <Image
-          source={require("../../assets/images/image1.jpeg")}
+          source={avatar}
           style={styles.image}
         />
       </View>

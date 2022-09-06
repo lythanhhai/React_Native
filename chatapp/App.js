@@ -18,6 +18,7 @@ export default function App() {
         <Stack.Screen name={"Home"} component={Home} />
         <Stack.Screen name={"Detail"} component={DetailChat} />
       </Stack.Navigator>
+      {/* <StatusBar /> */}
     </NavigationContainer>
   );
 }
