@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "240380152200",
+    "project_id": "chatapp2022-79067",
+    "storage_bucket": "chatapp2022-79067.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240380152200:android:701976ec10ce99831e123d",
+        "android_client_info": {
+          "package_name": "chat.lythanhhait.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240380152200-h33tg5es7p6a7mrtnlsqkr0l8ed1ll6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9-34BmHG4zsO7MlNLUbYO1R59Qy7wSLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240380152200-h33tg5es7p6a7mrtnlsqkr0l8ed1ll6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
