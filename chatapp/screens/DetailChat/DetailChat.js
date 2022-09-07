@@ -12,6 +12,7 @@ import OwnMessage from "../../components/OwnMessage/OwnMessage";
 import OtherMeassge from "../../components/OtherMessage/OtherMeassge";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const styles = StyleSheet.create({
   container: {
@@ -44,100 +45,122 @@ const DetailChat = (props) => {
   const [chatHistory, setChatHistory] = useState([
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: true,
       content: "hello",
-      timestamp: 1662430815,
+      timestamp: 1662430812,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: false,
       content: "hi",
-      timestamp: 1662430816,
+      timestamp: 1662430813,
     },
     {
       avatar: data.user.avatar,
+      isShower: false,
+      isSender: false,
+      content: "What happen?",
+      timestamp: 1662430814,
+    },
+    {
+      avatar: data.user.avatar,
+      isShower: true,
       isSender: true,
       content: "how are you today?",
       timestamp: 1662430817,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: false,
       content: "I'm fine, thanks and you",
       timestamp: 1662430818,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: true,
       content: "Oh, i'm great at now!",
       timestamp: 1662430820,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: false,
       content: "What do you today?",
       timestamp: 1662430840,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: true,
-      content: "I will learn english and practice programming",
+      content: "oh, yeah",
+      timestamp: 1662430843,
+    },
+    {
+      avatar: data.user.avatar,
+      isShower: false,
+      isSender: true,
+      content: "I thinh i will learn english and practice programming",
       timestamp: 1662430845,
     },
     {
       avatar: data.user.avatar,
+      isShower: true,
       isSender: false,
       content: "Nice!! :V",
       timestamp: 1662430850,
     },
-    {
-      avatar: data.user.avatar,
-      isSender: true,
-      content: "hello",
-      timestamp: 1662430815,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: false,
-      content: "hi",
-      timestamp: 1662430816,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: true,
-      content: "how are you today?",
-      timestamp: 1662430817,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: false,
-      content: "I'm fine, thanks and you",
-      timestamp: 1662430818,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: true,
-      content: "Oh, i'm great at now!",
-      timestamp: 1662430820,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: false,
-      content: "What do you today?",
-      timestamp: 1662430840,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: true,
-      content: "I will learn english and practice programming",
-      timestamp: 1662430845,
-    },
-    {
-      avatar: data.user.avatar,
-      isSender: false,
-      content: "Nice!! :V",
-      timestamp: 1662430850,
-    },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: true,
+    //   content: "hello",
+    //   timestamp: 1662430815,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: false,
+    //   content: "hi",
+    //   timestamp: 1662430816,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: true,
+    //   content: "how are you today?",
+    //   timestamp: 1662430817,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: false,
+    //   content: "I'm fine, thanks and you",
+    //   timestamp: 1662430818,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: true,
+    //   content: "Oh, i'm great at now!",
+    //   timestamp: 1662430820,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: false,
+    //   content: "What do you today?",
+    //   timestamp: 1662430840,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: true,
+    //   content: "I will learn english and practice programming",
+    //   timestamp: 1662430845,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isSender: false,
+    //   content: "Nice!! :V",
+    //   timestamp: 1662430850,
+    // },
   ]);
   const [check, setCheck] = useState(true);
   var afterData = chatHistory.sort((a, b) => {
@@ -155,6 +178,7 @@ const DetailChat = (props) => {
     sortDataByTime(chatHistory);
   });
   // alert("PROPS " + data.user.name);
+  const [contentMessage, setContentMessage] = useState("");
   return (
     <>
       <Header
@@ -199,14 +223,24 @@ const DetailChat = (props) => {
           /> */}
         <FlatList
           style={styles.scroll}
-          inverted
+          // inverted
           data={check ? afterData : chatHistory}
           renderItem={({ item }) => {
             if (item.isSender) {
-              return <OwnMessage content={item.content} avatar={item.avatar} />;
+              return (
+                <OwnMessage
+                  content={item.content}
+                  avatar={item.avatar}
+                  isShower={item.isShower}
+                />
+              );
             } else {
               return (
-                <OtherMeassge content={item.content} avatar={item.avatar} />
+                <OtherMeassge
+                  content={item.content}
+                  avatar={item.avatar}
+                  isShower={item.isShower}
+                />
               );
             }
           }}
@@ -228,10 +262,36 @@ const DetailChat = (props) => {
           <TextInput
             style={{ width: "90%", paddingHorizontal: 3 }}
             placeholder="Write a message..."
+            onChangeText={(value) => {
+              setContentMessage(value);
+            }}
+            value={contentMessage}
           />
           <MaterialIcons name="insert-emoticon" size={24} color="black" />
         </View>
-        <Feather name="send" size={24} color="black" />
+        <Feather
+          name="send"
+          size={24}
+          color="black"
+          onPress={async () => {
+            if (contentMessage.length === 0) {
+              alert("not");
+            } else {
+              // alert(contentMessage);
+              const res = await AsyncStorage.getItem("currentUser")
+              const currentUser = JSON.parse(res)
+              console.log(currentUser)
+              let newMessagerObject = {
+                // uid: currentUser.uid,
+                avatar: data.user.avatar,
+                isShower: true,
+                isSender: false,
+                content: contentMessage,
+                timestamp: (new Date()).getTime(),
+              }
+            }
+          }}
+        />
       </View>
     </>
   );
