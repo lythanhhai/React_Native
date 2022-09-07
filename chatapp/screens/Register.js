@@ -259,10 +259,18 @@ function Register(props) {
             createUserWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
                 const user = userCredential.user;
-                debugger;
+               //  debugger;
                 sendEmailVerification(user).then(() => {
                   console.log("Email verification sent");
                 });
+                firebaseSet(firebaseDatabaseRef(
+                  firebaseDatabase,
+                  `users/${user.uid}`
+                ), {
+                  email: user.email,
+                  emailVerified: user.emailVerified,
+                  accessToken: user.accessToken,
+                })
                 navigate("Home");
               })
               .catch((error) => {
