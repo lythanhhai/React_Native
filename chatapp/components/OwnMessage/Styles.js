@@ -22,6 +22,16 @@ const styles = StyleSheet.create({
     //     { translateX: Dimensions.get('window').width * 0.25 },
     //   ],
   },
+  imageHide: {
+    width: 45,
+    height: 45,
+    borderRadius: 30,
+    resizeMode: "contain",
+    objectFit: "cover",
+    marginLeft: 10,
+    opacity: 0,
+
+  },
   frame: {
     maxWidth: "60%",
     padding: 4,

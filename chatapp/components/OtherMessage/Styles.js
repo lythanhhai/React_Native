@@ -17,6 +17,16 @@ const styles = StyleSheet.create({
     marginRight: 10,
 
   },
+  imageHide: {
+    width: 45,
+    height: 45,
+    borderRadius: 30,
+    resizeMode: "contain",
+    objectFit: "cover",
+    marginLeft: 10,
+    opacity: 0,
+
+  },
   frame: {
     maxWidth: "60%",
     padding: 4,

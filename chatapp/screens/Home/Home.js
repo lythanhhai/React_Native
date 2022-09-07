@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
   //     if(user)
@@ -43,7 +43,7 @@ const Home = ({ navigation }) => {
       <Header title="Notification" pages={"Home"} />
       <View style={styles.container}>
         <Unread numberMessage={5} />
-        <ListChat navigation={navigation} />
+        <ListChat navigation={navigation} route={route} />
       </View>
     </>
   );
