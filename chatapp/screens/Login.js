@@ -27,6 +27,7 @@ import images from "../constants/images";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { isValidEmail, isValidPassword } from "../utilies/Validation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { AsyncStorage } from 'react-native'
 
 function Login(props) {
   const [keyboardIsShown, setKeyboardIsShown] = useState(false);
@@ -60,9 +61,9 @@ function Login(props) {
   const saveUser = async (userCredential) => {
     const user = userCredential.user;
     // debugger;
-    // console.log(typeof user)
+    // console.log(user)
     try {
-      await AsyncStorage.setItem("currentUser", user);
+      await AsyncStorage.setItem("user", JSON.stringify(user))
       alert("Data successfully saved");
     } catch (e) {
       alert("Failed to save the data to the storage");

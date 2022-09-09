@@ -13,6 +13,18 @@ import OtherMeassge from "../../components/OtherMessage/OtherMeassge";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  onAuthStateChanged,
+  firebaseDatabaseRef,
+  firebaseSet,
+  firebaseDatabase,
+  auth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  get,
+  child,
+} from "../../firebase/firebase";
 
 const styles = StyleSheet.create({
   container: {
@@ -278,16 +290,48 @@ const DetailChat = (props) => {
               alert("not");
             } else {
               // alert(contentMessage);
-              const res = await AsyncStorage.getItem("currentUser")
-              const currentUser = JSON.parse(res)
-              console.log(currentUser)
+              const res = await AsyncStorage.getItem("user");
+              const currentUser = JSON.parse(res);
+              // console.log(currentUser.uid + " " + currentUser["uid"])
               let newMessagerObject = {
-                // uid: currentUser.uid,
+                // uid: currentUser["uid"],
                 avatar: data.user.avatar,
                 isShower: true,
-                isSender: false,
+                // isSender: true,
                 content: contentMessage,
-                timestamp: (new Date()).getTime(),
+                timestamp: new Date().getTime(),
+              };
+              var listUser = {};
+              var idReceiver = "";
+              await get(child(firebaseDatabaseRef(firebaseDatabase), "users"))
+                .then((snapshot) => {
+                  listUser = snapshot.val()
+                  for(let item in listUser)
+                  {
+                    if(listUser[item].email === data.user.name)
+                    {
+                      idReceiver = item
+                      break;
+                    }
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              // console.log(idReceiver)
+              if(idReceiver === "")
+              {
+                console.log("User not exists!!!")
+              }
+              else {
+                firebaseSet(
+                  firebaseDatabaseRef(
+                    firebaseDatabase,
+                    `chats/${currentUser.uid}-${idReceiver}`
+                  ),
+                  newMessagerObject
+                );
+                setContentMessage("")
               }
             }
           }}

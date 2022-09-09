@@ -15,6 +15,8 @@ import {
   child,
   onValue,
 } from "../../firebase/firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import getUserById from "../../Repository/getUser";
 
 const ListChat = (props) => {
   const [listChat, setListChat] = useState([
@@ -81,39 +83,74 @@ const ListChat = (props) => {
   ]);
   useEffect(() => {
     const dbRef = firebaseDatabaseRef(firebaseDatabase);
-    onValue(firebaseDatabaseRef(firebaseDatabase, "users"), (snapshot) => {
-      if (snapshot.exists()) {
-        debugger;
-        let value = snapshot.val();
-        var newArray = [];
-        // newArray = value.map((item, index) => {
-        //   return {
-        //     avatar: require("../../assets/images/image5.png"),
-        //     name: "Satoshi9",
-        //     message: "",
-        //     minute: "5 min ago",
-        //   };
-        // });
-        for (let item in value) {
-          var random = (Math.floor(Math.random() * 5) + 1).toString();
-          // console.log(value[item])
-          if (props.route.params.user.uid === item) {
-          } else {
-            newArray.push({
-              avatar: require(`../../assets/images/image3.jpeg`),
-              name: value[item]["email"],
-              message: "",
-              minute: "5 min ago",
-              email: value[item]["email"],
-              accessToken: value[item]["accessToken"],
-            });
+    // onValue(firebaseDatabaseRef(firebaseDatabase, "users"), (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     debugger;
+    //     let value = snapshot.val();
+    //     var newArray = [];
+    //     // newArray = value.map((item, index) => {
+    //     //   return {
+    //     //     avatar: require("../../assets/images/image5.png"),
+    //     //     name: "Satoshi9",
+    //     //     message: "",
+    //     //     minute: "5 min ago",
+    //     //   };
+    //     // });
+    //     for (let item in value) {
+    //       var random = (Math.floor(Math.random() * 5) + 1).toString();
+    //       // console.log(value[item])
+    //       if (props.route.params.user.uid === item) {
+    //       } else {
+    //         newArray.push({
+    //           avatar: require(`../../assets/images/image3.jpeg`),
+    //           name: value[item]["email"],
+    //           message: "",
+    //           minute: "5 min ago",
+    //           email: value[item]["email"],
+    //           accessToken: value[item]["accessToken"],
+    //         });
+    //       }
+    //     }
+    //     setListChat(newArray);
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // });
+
+    onValue(
+      firebaseDatabaseRef(firebaseDatabase, "chats"),
+      async (snapshot) => {
+        if (snapshot.exists()) {
+          let res = await AsyncStorage.getItem("user");
+          let myId = JSON.parse(res).uid;
+          let value = snapshot.val();
+          
+          var newArray = [];
+          for (let item in value) {
+            let receiverId = item.split("-")[1]
+            let receiverUser = getUserById(receiverId)
+            console.log(receiverUser)
+            if (item.split("-")[0] === myId) {
+                newArray.push({
+                  avatar: require(`../../assets/images/image3.jpeg`),
+                  name: receiverUser.name,
+                  message: value[item]["content"],
+                  minute: "5 min ago",
+                  email: receiverUser.email,
+                  // accessToken: value[item]["accessToken"],
+                });
+            }
           }
+          // console.log(newArray)
+          
+          setListChat(newArray);
+          // console.log(value);
+        } else {
+          console.log("No data available");
         }
-        setListChat(newArray);
-      } else {
-        console.log("No data available");
       }
-    });
+    );
+
     // get(child(dbRef, "users"))
     //   .then((snapshot) => {})
     //   .catch((err) => {
