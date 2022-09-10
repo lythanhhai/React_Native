@@ -25,6 +25,7 @@ import {
   get,
   child,
 } from "../../firebase/firebase";
+import getNumberContent from "../../Repository/getContentChat";
 
 const styles = StyleSheet.create({
   container: {
@@ -319,6 +320,7 @@ const DetailChat = (props) => {
                   console.log(err);
                 });
               // console.log(idReceiver)
+              var idChat = getNumberContent(item)
               if(idReceiver === "")
               {
                 console.log("User not exists!!!")

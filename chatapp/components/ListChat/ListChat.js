@@ -127,10 +127,15 @@ const ListChat = (props) => {
           
           var newArray = [];
           for (let item in value) {
-            let receiverId = item.split("-")[1]
+            let isSender = 1;
+            if(myId === item.split("-")[1])
+            {
+              isSender = 0
+            }
+            let receiverId = item.split("-")[isSender]
             let receiverUser = getUserById(receiverId)
-            console.log(receiverUser)
-            if (item.split("-")[0] === myId) {
+            // console.log(receiverUser)
+            if (item.includes(myId)) {
                 newArray.push({
                   avatar: require(`../../assets/images/image3.jpeg`),
                   name: receiverUser.name,
