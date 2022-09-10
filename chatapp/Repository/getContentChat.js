@@ -19,9 +19,10 @@ import {
         let value = snapshot.val();
         
         for (let item in value) {
-          if (item === input_id) {
+          if (item === input_idChat) {
             for(let id in value[item])
             {
+                console.log(id)
                 count++
             }
             break;
