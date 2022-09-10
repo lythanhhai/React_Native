@@ -25,6 +25,7 @@ import {
   get,
   child,
 } from "../../firebase/firebase";
+import getNumberContent from "../../Repository/getContentChat";
 
 const styles = StyleSheet.create({
   container: {
@@ -55,76 +56,76 @@ const styles = StyleSheet.create({
 const DetailChat = (props) => {
   const data = props.route.params;
   const [chatHistory, setChatHistory] = useState([
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: true,
-      content: "hello",
-      timestamp: 1662430812,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: false,
-      content: "hi",
-      timestamp: 1662430813,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: false,
-      isSender: false,
-      content: "What happen?",
-      timestamp: 1662430814,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: true,
-      content: "how are you today?",
-      timestamp: 1662430817,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: false,
-      content: "I'm fine, thanks and you",
-      timestamp: 1662430818,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: true,
-      content: "Oh, i'm great at now!",
-      timestamp: 1662430820,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: false,
-      content: "What do you today?",
-      timestamp: 1662430840,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: true,
-      content: "oh, yeah",
-      timestamp: 1662430843,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: false,
-      isSender: true,
-      content: "I thinh i will learn english and practice programming",
-      timestamp: 1662430845,
-    },
-    {
-      avatar: data.user.avatar,
-      isShower: true,
-      isSender: false,
-      content: "Nice!! :V",
-      timestamp: 1662430850,
-    },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: true,
+    //   content: "hello",
+    //   timestamp: 1662430812,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: false,
+    //   content: "hi",
+    //   timestamp: 1662430813,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: false,
+    //   isSender: false,
+    //   content: "What happen?",
+    //   timestamp: 1662430814,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: true,
+    //   content: "how are you today?",
+    //   timestamp: 1662430817,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: false,
+    //   content: "I'm fine, thanks and you",
+    //   timestamp: 1662430818,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: true,
+    //   content: "Oh, i'm great at now!",
+    //   timestamp: 1662430820,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: false,
+    //   content: "What do you today?",
+    //   timestamp: 1662430840,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: true,
+    //   content: "oh, yeah",
+    //   timestamp: 1662430843,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: false,
+    //   isSender: true,
+    //   content: "I thinh i will learn english and practice programming",
+    //   timestamp: 1662430845,
+    // },
+    // {
+    //   avatar: data.user.avatar,
+    //   isShower: true,
+    //   isSender: false,
+    //   content: "Nice!! :V",
+    //   timestamp: 1662430850,
+    // },
     // {
     //   avatar: data.user.avatar,
     //   isSender: true,
@@ -301,6 +302,7 @@ const DetailChat = (props) => {
                 content: contentMessage,
                 timestamp: new Date().getTime(),
               };
+              // console.log(data.user.name)
               var listUser = {};
               var idReceiver = "";
               await get(child(firebaseDatabaseRef(firebaseDatabase), "users"))
@@ -319,6 +321,8 @@ const DetailChat = (props) => {
                   console.log(err);
                 });
               // console.log(idReceiver)
+              var idChat = getNumberContent(currentUser.uid + "-" + idReceiver)
+              // console.log(idChat)
               if(idReceiver === "")
               {
                 console.log("User not exists!!!")
@@ -327,7 +331,7 @@ const DetailChat = (props) => {
                 firebaseSet(
                   firebaseDatabaseRef(
                     firebaseDatabase,
-                    `chats/${currentUser.uid}-${idReceiver}`
+                    `chats/${currentUser.uid}-${idReceiver}/${idChat+1}`
                   ),
                   newMessagerObject
                 );

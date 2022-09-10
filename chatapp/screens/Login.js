@@ -64,7 +64,7 @@ function Login(props) {
     // console.log(user)
     try {
       await AsyncStorage.setItem("user", JSON.stringify(user))
-      alert("Data successfully saved");
+      // alert("Data successfully saved");
     } catch (e) {
       alert("Failed to save the data to the storage");
     }
