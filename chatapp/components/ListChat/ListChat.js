@@ -17,6 +17,7 @@ import {
 } from "../../firebase/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import getUserById from "../../Repository/getUser";
+import getNumberContent from "../../Repository/getContentChat";
 
 const ListChat = (props) => {
   const [listChat, setListChat] = useState([
@@ -81,6 +82,21 @@ const ListChat = (props) => {
     //   minute: "5 min ago",
     // },
   ]);
+  const checkExistsUser = (array, email) => {
+    var count = false
+    var object = {}
+    array.forEach((item, index) => {
+      if(item.email === email)
+      {
+        object = {
+          lastContentz: item.message,
+          timestamp: item.timestamp
+        }
+        count = true
+      }
+    })
+    return count
+  }
   useEffect(() => {
     const dbRef = firebaseDatabaseRef(firebaseDatabase);
     // onValue(firebaseDatabaseRef(firebaseDatabase, "users"), (snapshot) => {
@@ -134,12 +150,13 @@ const ListChat = (props) => {
             }
             let receiverId = item.split("-")[isSender]
             let receiverUser = getUserById(receiverId)
+            let idChatCurrent = getNumberContent(item).toString()
             // console.log(receiverUser)
-            if (item.includes(myId)) {
+            if (item.includes(myId) && !checkExistsUser(newArray, receiverUser.email)) {
                 newArray.push({
                   avatar: require(`../../assets/images/image3.jpeg`),
                   name: receiverUser.name,
-                  message: value[item]["content"],
+                  message: value[item][idChatCurrent]["content"],
                   minute: "5 min ago",
                   email: receiverUser.email,
                   // accessToken: value[item]["accessToken"],

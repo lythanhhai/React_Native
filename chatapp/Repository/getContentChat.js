@@ -15,7 +15,7 @@ import {
     var count = 0;
     onValue(firebaseDatabaseRef(firebaseDatabase, "chats"), (snapshot) => {
       if (snapshot.exists()) {
-        debugger;
+        // debugger;
         let value = snapshot.val();
         
         for (let item in value) {
