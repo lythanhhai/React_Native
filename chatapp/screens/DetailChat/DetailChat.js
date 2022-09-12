@@ -24,6 +24,7 @@ import {
   signInWithEmailAndPassword,
   get,
   child,
+  onValue,
 } from "../../firebase/firebase";
 import getNumberContent from "../../Repository/getContentChat";
 
@@ -63,118 +64,8 @@ const DetailChat = (props) => {
     //   content: "hello",
     //   timestamp: 1662430812,
     // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: false,
-    //   content: "hi",
-    //   timestamp: 1662430813,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: false,
-    //   isSender: false,
-    //   content: "What happen?",
-    //   timestamp: 1662430814,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: true,
-    //   content: "how are you today?",
-    //   timestamp: 1662430817,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: false,
-    //   content: "I'm fine, thanks and you",
-    //   timestamp: 1662430818,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: true,
-    //   content: "Oh, i'm great at now!",
-    //   timestamp: 1662430820,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: false,
-    //   content: "What do you today?",
-    //   timestamp: 1662430840,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: true,
-    //   content: "oh, yeah",
-    //   timestamp: 1662430843,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: false,
-    //   isSender: true,
-    //   content: "I thinh i will learn english and practice programming",
-    //   timestamp: 1662430845,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isShower: true,
-    //   isSender: false,
-    //   content: "Nice!! :V",
-    //   timestamp: 1662430850,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: true,
-    //   content: "hello",
-    //   timestamp: 1662430815,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: false,
-    //   content: "hi",
-    //   timestamp: 1662430816,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: true,
-    //   content: "how are you today?",
-    //   timestamp: 1662430817,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: false,
-    //   content: "I'm fine, thanks and you",
-    //   timestamp: 1662430818,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: true,
-    //   content: "Oh, i'm great at now!",
-    //   timestamp: 1662430820,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: false,
-    //   content: "What do you today?",
-    //   timestamp: 1662430840,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: true,
-    //   content: "I will learn english and practice programming",
-    //   timestamp: 1662430845,
-    // },
-    // {
-    //   avatar: data.user.avatar,
-    //   isSender: false,
-    //   content: "Nice!! :V",
-    //   timestamp: 1662430850,
-    // },
   ]);
+  const [chatHistory1, setChatHistory1] = useState([]);
   const [check, setCheck] = useState(true);
   var afterData = chatHistory.sort((a, b) => {
     return a.timestamp - b.timestamp;
@@ -192,6 +83,73 @@ const DetailChat = (props) => {
   });
   // alert("PROPS " + data.user.name);
   const [contentMessage, setContentMessage] = useState("");
+  const [enter, setEnter] = useState(true);
+  const getMessage = async () => {
+    var array = [];
+    const res = await AsyncStorage.getItem("user");
+    const currentUser = JSON.parse(res);
+    var listUser;
+    var idReceiver = "";
+    await get(child(firebaseDatabaseRef(firebaseDatabase), "users"))
+      .then((snapshot) => {
+        listUser = snapshot.val();
+        for (let item in listUser) {
+          if (listUser[item].email === data.user.name) {
+            idReceiver = item;
+            break;
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    onValue(firebaseDatabaseRef(firebaseDatabase, "chats"), (snapshot) => {
+      if (snapshot.exists()) {
+        // debugger;
+        let value = snapshot.val();
+
+        for (let item in value) {
+          if (
+            (item.split("-")[0] === currentUser.uid &&
+              item.split("-")[1] === idReceiver) ||
+            (item.split("-")[1] === currentUser.uid &&
+              item.split("-")[0] === idReceiver)
+          ) {
+            for (let id in value[item]) {
+              // console.log(id);
+              if (item.split("-")[0] === currentUser.uid) {
+                array.push({
+                  avatar: data.user.avatar,
+                  isShower: true,
+                  isSender: true,
+                  content: value[item][id]["content"],
+                  timestamp: value[item][id]["timestamp"],
+                });
+              } else {
+                array.push({
+                  avatar: data.user.avatar,
+                  isShower: true,
+                  isSender: false,
+                  content: value[item][id]["content"],
+                  timestamp: value[item][id]["timestamp"],
+                });
+              }
+            }
+            // break;
+          }
+        }
+        setChatHistory(array);
+      } else {
+        console.log("No data available");
+      }
+    });
+  };
+  useEffect(() => {
+    getMessage();
+  }, [enter]);
+  useEffect(() => {
+    setChatHistory1([...chatHistory])
+  }, [chatHistory]);
   return (
     <>
       <Header
@@ -237,7 +195,7 @@ const DetailChat = (props) => {
         <FlatList
           style={styles.scroll}
           // inverted
-          data={check ? afterData : chatHistory}
+          data={check ? afterData : chatHistory1}
           renderItem={({ item }) => {
             if (item.isSender) {
               return (
@@ -307,12 +265,10 @@ const DetailChat = (props) => {
               var idReceiver = "";
               await get(child(firebaseDatabaseRef(firebaseDatabase), "users"))
                 .then((snapshot) => {
-                  listUser = snapshot.val()
-                  for(let item in listUser)
-                  {
-                    if(listUser[item].email === data.user.name)
-                    {
-                      idReceiver = item
+                  listUser = snapshot.val();
+                  for (let item in listUser) {
+                    if (listUser[item].email === data.user.name) {
+                      idReceiver = item;
                       break;
                     }
                   }
@@ -321,21 +277,20 @@ const DetailChat = (props) => {
                   console.log(err);
                 });
               // console.log(idReceiver)
-              var idChat = getNumberContent(currentUser.uid + "-" + idReceiver)
+              var idChat = getNumberContent(currentUser.uid + "-" + idReceiver);
               // console.log(idChat)
-              if(idReceiver === "")
-              {
-                console.log("User not exists!!!")
-              }
-              else {
+              if (idReceiver === "") {
+                console.log("User not exists!!!");
+              } else {
                 firebaseSet(
                   firebaseDatabaseRef(
                     firebaseDatabase,
-                    `chats/${currentUser.uid}-${idReceiver}/${idChat+1}`
+                    `chats/${currentUser.uid}-${idReceiver}/${idChat + 1}`
                   ),
                   newMessagerObject
                 );
-                setContentMessage("")
+                setContentMessage("");
+                setEnter(!enter);
               }
             }
           }}

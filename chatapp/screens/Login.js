@@ -228,8 +228,17 @@ function Login(props) {
             onPress={() => {
               //alert(`Email = ${email}, password = ${password}`)
               signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                  saveUser(userCredential);
+                .then(async (userCredential) => {
+                  const user = userCredential.user;
+                  // debugger;
+                  // console.log(user)
+                  try {
+                    await AsyncStorage.setItem("user", JSON.stringify(user))
+                    // alert("Data successfully saved");
+                  } catch (e) {
+                    alert("Failed to save the data to the storage");
+                  }
+                  navigate("Home", { user: user });
                 })
                 .catch((error) => {
                   debugger;
