@@ -7,13 +7,12 @@ const OtherMessage = (props) => {
   return (
     <>
       <View style={styles.container}>
-        {
-          isShower ? <Image
-          source={avatar}
-          style={styles.image}
-        /> : <Image source={avatar} style={styles.imageHide} />
-        }
-        
+        {isShower ? (
+          <Image source={avatar} style={styles.image} />
+        ) : (
+          <Image source={avatar} style={styles.imageHide} />
+        )}
+
         <View style={styles.frame}>
           <Text>{content}</Text>
         </View>

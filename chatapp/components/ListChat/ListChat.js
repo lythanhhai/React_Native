@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, FlatList } from "react-native";
+import { View, Text, Image, FlatList, SwipeView } from "react-native";
 import styles from "./Styles";
 import data from "../../constants/dataChat";
 import ChatItem from "../ChatItem/ChatItem";
@@ -102,6 +102,7 @@ const ListChat = (props) => {
     });
     return object;
   };
+  const [currentDate, setCurrentDate] = useState(new Date().getTime());
   useEffect(() => {
     const dbRef = firebaseDatabaseRef(firebaseDatabase);
     if (props.list) {
@@ -171,6 +172,48 @@ const ListChat = (props) => {
                 // console.log(
                 //   "oke: " + value[item][idChatCurrent]["content"]
                 // );
+                var second =
+                  (new Date().getTime() -
+                    value[item][idChatCurrent]["timestamp"]) /
+                  1000;
+                var numberTimeAgo = Math.floor(
+                  (new Date().getTime() -
+                    value[item][idChatCurrent]["timestamp"]) /
+                    1000 /
+                    60 /
+                    60
+                ).toString();
+                var numberTimeAgo1 = Math.floor(
+                  (new Date().getTime() -
+                    value[item][idChatCurrent]["timestamp"]) /
+                    1000 /
+                    60
+                ).toString();
+                var numberTimeAgo2 = Math.floor(
+                  (new Date().getTime() -
+                    value[item][idChatCurrent]["timestamp"]) /
+                    1000 /
+                    60
+                ).toString();
+                var result = "";
+                if (numberTimeAgo === "0" && numberTimeAgo1 === "0") {
+                  result = numberTimeAgo2 + " seconds ago";
+                } else {
+                  if (numberTimeAgo === "0") {
+                    result = numberTimeAgo1 + " minutes ago";
+                  } else {
+                    if (Number(numberTimeAgo) >= 24) {
+                      result = "more 1 hours ago";
+                    } else {
+                      result = numberTimeAgo + " hours ago";
+                    }
+                  }
+                }
+                // setCurrentDate(new Date().getTime())
+                // var h = new Date(1663055471265).getHours();
+                // var m = new Date(1663055471265).getMinutes();
+                // var s = new Date(1663055471265).getSeconds();
+                // console.log("haha:" + h + " " + m + " " + s);
                 if (
                   checkExistsUser(newArray, receiverUser.email).count &&
                   checkExistsUser(newArray, receiverUser.email).timestamp <
@@ -181,15 +224,15 @@ const ListChat = (props) => {
                     avatar: require(`../../assets/images/image3.jpeg`),
                     name: receiverUser.name,
                     message: value[item][idChatCurrent]["content"],
-                    minute: "5 min ago",
+                    minute: result,
                     email: receiverUser.email,
                     timestamp: value[item][idChatCurrent]["timestamp"],
                   };
-                  console.log(newArray);
+                  // console.log(newArray);
                   newArray[
                     checkExistsUser(newArray, receiverUser.email).index
                   ] = newObject;
-                  console.log(newArray);
+                  // console.log(newArray);
                   // newArray = newArray.map((item, index) => {
                   //   if (
                   //     index ===
@@ -214,7 +257,7 @@ const ListChat = (props) => {
                     avatar: require(`../../assets/images/image3.jpeg`),
                     name: receiverUser.name,
                     message: value[item][idChatCurrent]["content"],
-                    minute: "5 min ago",
+                    minute: result,
                     email: receiverUser.email,
                     timestamp: value[item][idChatCurrent]["timestamp"],
                     // accessToken: value[item]["accessToken"],
@@ -244,7 +287,10 @@ const ListChat = (props) => {
       <FlatList
         data={listChat}
         renderItem={({ item }) => {
-          return <ChatItem item={item} navigation={props.navigation} />;
+          return (
+            
+              <ChatItem item={item} navigation={props.navigation} />
+          );
         }}
       />
     </View>

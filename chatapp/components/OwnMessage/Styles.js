@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     // alignItems: "center",
     paddingRight: 10,
-  },    
+  },
   image: {
     width: 45,
     height: 45,
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     objectFit: "cover",
     marginLeft: 10,
     opacity: 0,
-
   },
   frame: {
     maxWidth: "60%",
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     // transform: [
     //     { translateX: Dimensions.get('window').width * 0.25 },
     //   ],
-  },    
+  },
 });
 
 export default styles;

@@ -10,11 +10,11 @@ import {
   Keyboard,
 } from "react-native";
 
-import colors from '../constants/colors'
-import fontSizes from '../constants/fontSizes'
-import icons from '../constants/icons'
-import images from '../constants/images'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import colors from "../constants/colors";
+import fontSizes from "../constants/fontSizes";
+import icons from "../constants/icons";
+import images from "../constants/images";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import { isValidEmail, isValidPassword } from "../utilies/Validation";
 import {
   onAuthStateChanged,
@@ -259,18 +259,18 @@ function Register(props) {
             createUserWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
                 const user = userCredential.user;
-               //  debugger;
+                //  debugger;
                 sendEmailVerification(user).then(() => {
                   console.log("Email verification sent");
                 });
-                firebaseSet(firebaseDatabaseRef(
-                  firebaseDatabase,
-                  `users/${user.uid}`
-                ), {
-                  email: user.email,
-                  emailVerified: user.emailVerified,
-                  accessToken: user.accessToken,
-                })
+                firebaseSet(
+                  firebaseDatabaseRef(firebaseDatabase, `users/${user.uid}`),
+                  {
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    accessToken: user.accessToken,
+                  }
+                );
                 navigate("Home");
               })
               .catch((error) => {
