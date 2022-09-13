@@ -4,11 +4,20 @@ import Unread from "../../components/Unread/Unread";
 import ChatItem from "../../components/ChatItem/ChatItem";
 import ListChat from "../../components/ListChat/ListChat";
 import { View, StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import {
-  auth, onAuthStateChanged, firebaseDatabaseRef, firebaseSet, firebaseDatabase
-}
-from "../../firebase/firebase"
+  auth,
+  onAuthStateChanged,
+  firebaseDatabaseRef,
+  firebaseSet,
+  firebaseDatabase,
+} from "../../firebase/firebase";
+import ChatHistory from "../ChatHistory";
+import Icon from "react-native-vector-icons/FontAwesome";
+import ListFriend from "../ListFriend";
+
+const Tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
   container: {
@@ -21,31 +30,29 @@ const styles = StyleSheet.create({
 });
 
 const Home = ({ navigation, route }) => {
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if(user)
-  //     {
-  //       const userId = user.uid
-  //       firebaseSet(firebaseDatabaseRef(
-  //         firebaseDatabase,
-  //         `users/${userId}`
-  //       ), {
-  //         email: user.email,
-  //         emailVerified: user.emailVerified,
-  //         accessToken: user.accessToken,
-  //       })
-        
-  //     }
-  //   })
-  // })
   return (
-    <>
-      <Header title="Notification" pages={"Home"} />
-      <View style={styles.container}>
-        <Unread numberMessage={5} />
-        <ListChat navigation={navigation} route={route} />
-      </View>
-    </>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen
+        name="Friend"
+        component={ListFriend}
+        options={{
+          tabBarIcon: () => <Icon name="list" size={24} />,
+          tabBarShowLabel: false,
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name="Chat"
+        component={ChatHistory}
+        options={{
+          tabBarIcon: () => <Icon name="wechat" size={24} />,
+          tabBarShowLabel: false,
+        }}
+      ></Tab.Screen>
+    </Tab.Navigator>
   );
 };
 
