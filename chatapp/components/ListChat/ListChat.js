@@ -83,95 +83,155 @@ const ListChat = (props) => {
     // },
   ]);
   const checkExistsUser = (array, email) => {
-    var count = false
-    var object = {}
+    var count = 0;
+    var object = {
+      lastContentz: "",
+      timestamp: 0,
+      count: false,
+    };
     array.forEach((item, index) => {
-      if(item.email === email)
-      {
+      if (item.email === email) {
         object = {
           lastContentz: item.message,
-          timestamp: item.timestamp
-        }
-        count = true
+          timestamp: item.timestamp,
+          count: true,
+          index: count,
+        };
       }
-    })
-    return count
-  }
+      count++;
+    });
+    return object;
+  };
   useEffect(() => {
     const dbRef = firebaseDatabaseRef(firebaseDatabase);
-    // onValue(firebaseDatabaseRef(firebaseDatabase, "users"), (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     debugger;
-    //     let value = snapshot.val();
-    //     var newArray = [];
-    //     // newArray = value.map((item, index) => {
-    //     //   return {
-    //     //     avatar: require("../../assets/images/image5.png"),
-    //     //     name: "Satoshi9",
-    //     //     message: "",
-    //     //     minute: "5 min ago",
-    //     //   };
-    //     // });
-    //     for (let item in value) {
-    //       var random = (Math.floor(Math.random() * 5) + 1).toString();
-    //       // console.log(value[item])
-    //       if (props.route.params.user.uid === item) {
-    //       } else {
-    //         newArray.push({
-    //           avatar: require(`../../assets/images/image3.jpeg`),
-    //           name: value[item]["email"],
-    //           message: "",
-    //           minute: "5 min ago",
-    //           email: value[item]["email"],
-    //           accessToken: value[item]["accessToken"],
-    //         });
-    //       }
-    //     }
-    //     setListChat(newArray);
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    // });
-
-    onValue(
-      firebaseDatabaseRef(firebaseDatabase, "chats"),
-      async (snapshot) => {
-        if (snapshot.exists()) {
-          let res = await AsyncStorage.getItem("user");
-          let myId = JSON.parse(res).uid;
-          let value = snapshot.val();
-          
-          var newArray = [];
-          for (let item in value) {
-            let isSender = 1;
-            if(myId === item.split("-")[1])
-            {
-              isSender = 0
-            }
-            let receiverId = item.split("-")[isSender]
-            let receiverUser = getUserById(receiverId)
-            let idChatCurrent = getNumberContent(item).toString()
-            // console.log(receiverUser)
-            if (item.includes(myId) && !checkExistsUser(newArray, receiverUser.email)) {
+    if (props.list) {
+      onValue(
+        firebaseDatabaseRef(firebaseDatabase, "users"),
+        async (snapshot) => {
+          if (snapshot.exists()) {
+            debugger;
+            const res = await AsyncStorage.getItem("user");
+            const currentUser = JSON.parse(res);
+            let value = snapshot.val();
+            var newArray = [];
+            // newArray = value.map((item, index) => {
+            //   return {
+            //     avatar: require("../../assets/images/image5.png"),
+            //     name: "Satoshi9",
+            //     message: "",
+            //     minute: "5 min ago",
+            //   };
+            // });
+            for (let item in value) {
+              var random = (Math.floor(Math.random() * 5) + 1).toString();
+              // console.log(value[item])
+              if (currentUser.uid === item) {
+              } else {
                 newArray.push({
                   avatar: require(`../../assets/images/image3.jpeg`),
-                  name: receiverUser.name,
-                  message: value[item][idChatCurrent]["content"],
-                  minute: "5 min ago",
-                  email: receiverUser.email,
-                  // accessToken: value[item]["accessToken"],
+                  name: value[item]["email"],
+                  message: "",
+                  minute: "",
+                  email: value[item]["email"],
+                  accessToken: value[item]["accessToken"],
                 });
+              }
             }
+            setListChat(newArray);
+          } else {
+            console.log("No data available");
           }
-          // console.log(newArray)
-          
-          setListChat(newArray);
-          // console.log(value);
-        } else {
-          console.log("No data available");
         }
-      }
-    );
+      );
+    } else {
+      onValue(
+        firebaseDatabaseRef(firebaseDatabase, "chats"),
+        async (snapshot) => {
+          if (snapshot.exists()) {
+            let res = await AsyncStorage.getItem("user");
+            let myId = JSON.parse(res).uid;
+            let value = snapshot.val();
+
+            var newArray = [];
+            for (let item in value) {
+              let isSender = 1;
+              if (myId === item.split("-")[1]) {
+                isSender = 0;
+              }
+              let receiverId = item.split("-")[isSender];
+              let receiverUser = getUserById(receiverId);
+              let idChatCurrent = getNumberContent(item).toString();
+              // console.log(receiverUser)
+
+              if (
+                item.includes(myId)
+                // &&
+                // !checkExistsUser(newArray, receiverUser.email).count
+              ) {
+                // console.log(
+                //   "oke: " + value[item][idChatCurrent]["content"]
+                // );
+                if (
+                  checkExistsUser(newArray, receiverUser.email).count &&
+                  checkExistsUser(newArray, receiverUser.email).timestamp <
+                    value[item][idChatCurrent]["timestamp"]
+                ) {
+                  // console.log("hsdufh")
+                  const newObject = {
+                    avatar: require(`../../assets/images/image3.jpeg`),
+                    name: receiverUser.name,
+                    message: value[item][idChatCurrent]["content"],
+                    minute: "5 min ago",
+                    email: receiverUser.email,
+                    timestamp: value[item][idChatCurrent]["timestamp"],
+                  };
+                  console.log(newArray);
+                  newArray[
+                    checkExistsUser(newArray, receiverUser.email).index
+                  ] = newObject;
+                  console.log(newArray);
+                  // newArray = newArray.map((item, index) => {
+                  //   if (
+                  //     index ===
+                  //     checkExistsUser(newArray, receiverUser.email).index
+                  //   ) {
+                  //     return {
+                  //       avatar: require(`../../assets/images/image3.jpeg`),
+                  //       name: receiverUser.name,
+                  //       message: value[item][idChatCurrent]["content"],
+                  //       minute: "5 min ago",
+                  //       email: receiverUser.email,
+                  //       timestamp: value[item][idChatCurrent]["timestamp"],
+                  //     };
+                  //   }
+                  //   else{
+                  //     return item
+                  //   }
+                  // });
+                } else {
+                  // console.log("hsdufh11111")
+                  newArray.push({
+                    avatar: require(`../../assets/images/image3.jpeg`),
+                    name: receiverUser.name,
+                    message: value[item][idChatCurrent]["content"],
+                    minute: "5 min ago",
+                    email: receiverUser.email,
+                    timestamp: value[item][idChatCurrent]["timestamp"],
+                    // accessToken: value[item]["accessToken"],
+                  });
+                }
+              }
+            }
+            // console.log(newArray)
+
+            setListChat(newArray);
+            // console.log(value);
+          } else {
+            console.log("No data available");
+          }
+        }
+      );
+    }
 
     // get(child(dbRef, "users"))
     //   .then((snapshot) => {})

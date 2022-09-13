@@ -4,10 +4,12 @@ import DetailChat from "./screens/DetailChat/DetailChat";
 import Home from "./screens/Home/Home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Register from "./screens/Register";
 import Login from "./screens/Login";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
