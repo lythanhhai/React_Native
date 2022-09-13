@@ -148,7 +148,7 @@ const DetailChat = (props) => {
     getMessage();
   }, [enter]);
   useEffect(() => {
-    setChatHistory1([...chatHistory])
+    setChatHistory1([...chatHistory]);
   }, [chatHistory]);
   return (
     <>

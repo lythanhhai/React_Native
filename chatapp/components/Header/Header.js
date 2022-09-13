@@ -5,7 +5,7 @@ import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 // import { StatusBar } from "expo-status-bar";
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
 
 const Header = ({ title, pages, navigation }) => {
   return (

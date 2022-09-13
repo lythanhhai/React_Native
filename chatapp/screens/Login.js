@@ -63,7 +63,7 @@ function Login(props) {
     // debugger;
     // console.log(user)
     try {
-      await AsyncStorage.setItem("user", JSON.stringify(user))
+      await AsyncStorage.setItem("user", JSON.stringify(user));
       // alert("Data successfully saved");
     } catch (e) {
       alert("Failed to save the data to the storage");
@@ -233,7 +233,7 @@ function Login(props) {
                   // debugger;
                   // console.log(user)
                   try {
-                    await AsyncStorage.setItem("user", JSON.stringify(user))
+                    await AsyncStorage.setItem("user", JSON.stringify(user));
                     // alert("Data successfully saved");
                   } catch (e) {
                     alert("Failed to save the data to the storage");

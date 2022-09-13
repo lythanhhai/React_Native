@@ -7,11 +7,14 @@ import { View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import {
-  auth, onAuthStateChanged, firebaseDatabaseRef, firebaseSet, firebaseDatabase
-}
-from "../firebase/firebase"
+  auth,
+  onAuthStateChanged,
+  firebaseDatabaseRef,
+  firebaseSet,
+  firebaseDatabase,
+} from "../firebase/firebase";
 
-const tab = createBottomTabNavigator()
+const tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +31,7 @@ const ListFriend = ({ navigation, route }) => {
     <>
       <Header title="List Friend" pages={"Home"} />
       <View style={styles.container}>
-        <ListChat navigation={navigation} route={route} list={true}/>
+        <ListChat navigation={navigation} route={route} list={true} />
       </View>
     </>
   );

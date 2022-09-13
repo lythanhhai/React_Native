@@ -7,11 +7,14 @@ import { View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import {
-  auth, onAuthStateChanged, firebaseDatabaseRef, firebaseSet, firebaseDatabase
-}
-from "../firebase/firebase"
+  auth,
+  onAuthStateChanged,
+  firebaseDatabaseRef,
+  firebaseSet,
+  firebaseDatabase,
+} from "../firebase/firebase";
 
-const tab = createBottomTabNavigator()
+const tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +40,7 @@ const ChatHistory = ({ navigation, route }) => {
   //         emailVerified: user.emailVerified,
   //         accessToken: user.accessToken,
   //       })
-        
+
   //     }
   //   })
   // })
@@ -46,7 +49,7 @@ const ChatHistory = ({ navigation, route }) => {
       <Header title="Chat History" pages={"Home"} />
       <View style={styles.container}>
         <Unread numberMessage={5} />
-        <ListChat navigation={navigation} route={route} list={false}/>
+        <ListChat navigation={navigation} route={route} list={false} />
       </View>
     </>
   );

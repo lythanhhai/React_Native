@@ -33,9 +33,9 @@ const getUserById = (input_id) => {
     }
   });
   if (user) {
-    return user
+    return user;
   } else {
-    return {}
+    return {};
   }
 };
 
