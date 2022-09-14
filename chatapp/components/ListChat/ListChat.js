@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import getUserById from "../../Repository/getUser";
 import getNumberContent from "../../Repository/getContentChat";
 
+
 const ListChat = (props) => {
   const [listChat, setListChat] = useState([
     // {
@@ -203,7 +204,7 @@ const ListChat = (props) => {
                     result = numberTimeAgo1 + " minutes ago";
                   } else {
                     if (Number(numberTimeAgo) >= 24) {
-                      result = "more 1 hours ago";
+                      result = "more 1 days ago";
                     } else {
                       result = numberTimeAgo + " hours ago";
                     }
@@ -221,7 +222,7 @@ const ListChat = (props) => {
                 ) {
                   // console.log("hsdufh")
                   const newObject = {
-                    avatar: require(`../../assets/images/image3.jpeg`),
+                    avatar: value[item][idChatCurrent]["avatar"],
                     name: receiverUser.name,
                     message: value[item][idChatCurrent]["content"],
                     minute: result,
@@ -286,11 +287,10 @@ const ListChat = (props) => {
     <View style={styles.container}>
       <FlatList
         data={listChat}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
-            
-              <ChatItem item={item} navigation={props.navigation} />
-          );
+            <ChatItem item={item} navigation={props.navigation} index={index} />
+          )
         }}
       />
     </View>
